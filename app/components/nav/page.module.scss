@@ -1,0 +1,25 @@
+.user {
+  position: relative;
+
+  &:hover .userMenu {
+    display: flex;
+  }
+
+  .userMenu {
+    position: absolute;
+    background-color: white;
+    padding: 20px 40px;
+    width: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    display: none;
+    flex-direction: column;
+    gap: 20px;
+    cursor: pointer;
+  }
+
+  button {
+    height: 40px;
+    cursor: pointer;
+  }
+}
