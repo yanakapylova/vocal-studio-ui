@@ -13,7 +13,7 @@ import { Group } from "./interfaces/Group";
 // получить всех пользователей (только для админа)
 
 export const fetchGroups = createAsyncThunk("group/fetchGroups", async () => {
-  const response = await fetch(`http://localhost:3008/groups`, {
+  const response = await fetch(`http://localhost:3008/api/groups`, {
     method: "GET",
   });
   const data = await response.json();
@@ -24,7 +24,7 @@ export const createGroup = createAsyncThunk(
   "group/createGroup",
   async (name: string) => {
     console.log(name);
-    const response = await fetch(`http://localhost:3008/groups`, {
+    const response = await fetch(`http://localhost:3008/api/groups`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

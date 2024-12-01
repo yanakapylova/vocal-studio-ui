@@ -7,7 +7,7 @@ import styles from "./page.module.scss";
 
 export const AddConstantSchedule = () => {
   const [groups, setGroups] = useState<number[]>([]);
-  const [date, setDate] = useState("");
+  const [day, setDay] = useState("");
   const [time, setTime] = useState("");
   const [activity, setActivity] = useState("");
   const [durationMin, setDurationMin] = useState(0);
@@ -39,7 +39,8 @@ export const AddConstantSchedule = () => {
         dispatch(
           createSchedule({
             type: "permanent",
-            date,
+            day,
+            date: undefined,
             time,
             place,
             durationMin,
@@ -49,7 +50,6 @@ export const AddConstantSchedule = () => {
         );
       }}
     >
-
       <div id="groups">
         <span>Выберите группы:</span>
         {groupsList.map((groupItem) => {
@@ -83,7 +83,7 @@ export const AddConstantSchedule = () => {
           <select
             id="date"
             required
-            onChange={(e) => setDate(e.target.value)}
+            onChange={(e) => setDay(e.target.value)}
             defaultValue={""}
             className="formFields"
           >
@@ -138,8 +138,8 @@ export const AddConstantSchedule = () => {
             <option value="" disabled>
               -- Не выбрано --
             </option>
-            <option value="Вокал">Вокал</option>;
-            <option value="Хореография">Хореография</option>;
+            <option value="vocal">Вокал</option>;
+            <option value="choreo">Хореография</option>;
           </select>
         </div>
 

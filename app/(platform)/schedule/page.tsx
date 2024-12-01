@@ -11,6 +11,7 @@ import { AddScheduleTabs } from "./AddSchedule";
 import { CalendarNavigation } from "./CalendarNavigation";
 import { Day } from "./Day";
 import { months, weekdays } from "./constants";
+import { format } from "date-fns";
 
 const Schedule = () => {
   const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
@@ -87,9 +88,10 @@ const Schedule = () => {
     for (let day = 1; day <= daysInMonth; day++) {
       const eventsForThisDay = schedule.filter((item) => {
         if (item.type === "permanent") {
-          return item.date === weekdays[dayofweek];
+          return item.day === weekdays[dayofweek];
         } else {
-          const [eventDay, eventMonth] = item.date
+          // console.log(item.date);
+          const [eventDay, eventMonth] = format(new Date(item.date), "dd-MM")
             .split("-")
             .map((v) => v.replace(/^0/, "")); // Убираем ведущие нули
           return (

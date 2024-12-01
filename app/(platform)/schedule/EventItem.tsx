@@ -3,6 +3,7 @@ import styles from "./page.module.scss";
 import { AppDispatch } from "@/app/store";
 import { useDispatch } from "react-redux";
 import { deleteSchedule } from "@/app/features/schedulesSlice";
+import { activities } from "./constants";
 
 export const EventItem = ({ className, index, user, item }: any) => {
   const dispatch = useDispatch<AppDispatch>();
@@ -19,7 +20,9 @@ export const EventItem = ({ className, index, user, item }: any) => {
               })}
             </div>
           )}
-          <div className={styles.activity}>{item.activity}</div>
+          {item.type == "permanent" && (
+            <div className={styles.activity}>{activities[item.activity]}</div>
+          )}
           <div className={styles.place}>{item.place}</div>
         </div>
         <button

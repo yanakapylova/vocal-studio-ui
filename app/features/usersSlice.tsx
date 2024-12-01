@@ -3,21 +3,21 @@ import { Group } from "./interfaces/Group";
 import { User } from "./interfaces/User";
 import { Schedule } from "./interfaces/Schedule";
 
-// получить пользователя по id
+// get all users
 export const fetchUsers = createAsyncThunk("users/fetchUsers", async () => {
-  const response = await fetch("http://127.0.0.1:3008/users", {
+  const response = await fetch("http://127.0.0.1:3008/api/users", {
     method: "GET",
   });
-  const data = await response.json();
 
   if (!response.ok) {
     console.log("Не удалось получить пользователей");
     return null;
   }
 
-  return data;
+  return response.json();
 });
 
+// get user by id
 export const fetchUserbyId = createAsyncThunk(
   "user/fetchUserbyId",
   async (id: number) => {
@@ -26,7 +26,7 @@ export const fetchUserbyId = createAsyncThunk(
     });
 
     if (!response.ok) {
-      console.log("Такого пользователя не существует");
+      console.error("Wrong user id");
       return null;
     }
 
@@ -35,7 +35,7 @@ export const fetchUserbyId = createAsyncThunk(
   }
 );
 
-// создать нового пользователя
+// create user
 export const createUser = createAsyncThunk(
   "user/createUser",
   async (user: {
@@ -47,7 +47,9 @@ export const createUser = createAsyncThunk(
     groups: number[];
   }) => {
     const { name, surname, birthdate, email, role, groups } = user;
-    const response = await fetch(`http://127.0.0.1:3008/users`, {
+    console.log(user);
+    console.log(new Date(birthdate));
+    const response = await fetch(`http://127.0.0.1:3008/api/users`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -55,7 +57,8 @@ export const createUser = createAsyncThunk(
       body: JSON.stringify({
         name: name,
         surname: surname,
-        birthdate: birthdate,
+        fathername: "cvbhnjmk",
+        birthdate: new Date(birthdate),
         email: email,
         password: birthdate.toString(),
         role: role,
@@ -64,25 +67,26 @@ export const createUser = createAsyncThunk(
     });
 
     if (!response.ok) {
-      console.log("Не удалось создать пользователя");
-      return null
+      console.error("Error creating a user");
+      console.log(response);
+      return null;
     }
 
     console.log(`Пользователь ${name} ${surname} успешно создан`);
     const data = await response.json();
-    return data
+    return data;
   }
 );
 
-// удалить пользователя
+// delete user
 export const deleteUser = createAsyncThunk(
   "user/deleteUser",
   async (id: number) => {
-    const response = await fetch(`http://127.0.0.1:3008/users/${id}`, {
+    const response = await fetch(`http://127.0.0.1:3008/api/users/${id}`, {
       method: "DELETE",
     });
     if (!response.ok) {
-      console.log("Такого пользователя не существует");
+      console.log("Error deleting user");
       return null;
     }
     console.log(`Пользователь успешно удален`);
@@ -90,32 +94,7 @@ export const deleteUser = createAsyncThunk(
   }
 );
 
-// обновление name
-export const updateUserName = createAsyncThunk(
-  "user/updateUserName",
-  async (data: { id: number; newName?: string }) => {
-    const { id, newName } = data;
-
-    const response = await fetch(`http://127.0.0.1:3008/users/${id}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        name: newName,
-      }),
-    });
-
-    if (!response.ok) {
-      console.log(`Не удалось обновить информация о пользователе`);
-      return null;
-    } else {
-      console.log(`Инофрмация о пользователе успешно обновлена`);
-      data;
-    }
-  }
-);
-
+// обновление user
 export const updateUser = createAsyncThunk(
   "user/updateUser",
   async (data: {
@@ -126,27 +105,34 @@ export const updateUser = createAsyncThunk(
       birthdate?: string;
       email?: string;
       role?: string;
+      photoURL?: string | null;
       groups?: Group[];
     };
   }) => {
     const { id, newData } = data;
+    const jwt: string | null = localStorage.getItem("jwtToken");
 
-    console.log(JSON.stringify(newData));
-    const response = await fetch(`http://127.0.0.1:3008/users/${id}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
+    if (jwt) {
+      const response = await fetch(`http://127.0.0.1:3008/api/users/${id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: jwt.toString(),
+        },
 
-      body: JSON.stringify(newData),
-    });
+        body: JSON.stringify(newData),
+      });
 
-    if (!response.ok) {
-      console.log(`Не удалось обновить информация о пользователе`);
-      return null
+      if (!response.ok) {
+        console.log(`Не удалось обновить информация о пользователе`);
+        return null;
+      } else {
+        console.log(`Инофрмация о пользователе успешно обновлена`);
+        return { id: data.id, ...data.newData };
+      }
     } else {
-      console.log(`Инофрмация о пользователе успешно обновлена`);
-      return data;
+      console.log(`Требуется авторизация`);
+      return null;
     }
   }
 );
@@ -156,7 +142,7 @@ export const signIn = createAsyncThunk(
   "user/signIn",
   async (credits: { email: string; password: string }) => {
     const { email, password } = credits;
-    const response = await fetch(`http://127.0.0.1:3008/auth/login`, {
+    const response = await fetch(`http://127.0.0.1:3008/api/auth`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -168,16 +154,14 @@ export const signIn = createAsyncThunk(
     });
 
     if (!response.ok) {
-      console.log("Пользователя с такими данными не существует");
       return { id: null, statusCode: +response.status };
     }
 
     const data = await response.json();
     localStorage.removeItem("jwtToken");
     localStorage.setItem("jwtToken", "Bearer " + data["access_token"]);
-    console.log("Добро пожаловать!");
 
-    return data["userInfo"];
+    return data["user"];
   }
 );
 
@@ -198,7 +182,7 @@ export interface ActiveUser {
   email: string;
   role: string;
   groups: Group[];
-  photoURL: string;
+  photoURL: string | null;
 }
 
 export interface UsersState {
@@ -255,12 +239,37 @@ export const usersSlice = createSlice({
       }
     });
 
+    // обновить пользователя
+    builder.addCase(updateUser.fulfilled, (state: any, action: any) => {
+      const newData = action.payload;
+
+      const oldData = sessionStorage.getItem("user");
+      if (oldData) {
+        const data = { ...JSON.parse(oldData), ...newData };
+
+        state.activeUser = {
+          id: data.id,
+          name: data.name,
+          surname: data.surname,
+          birthdate: data.birthdate,
+          email: data.email,
+          role: data.role,
+          photoURL: data.photoURL,
+          groups: data.groups,
+        };
+
+        sessionStorage.setItem("user", JSON.stringify(data));
+      }
+    });
+
     // удалить пользователя
     builder.addCase(deleteUser.fulfilled, (state: any, action: any) => {
       const id = action.payload;
 
       if (id) {
-        state.entities = state.entities.filter((entity: any) => entity.id !== id);
+        state.entities = state.entities.filter(
+          (entity: any) => entity.id !== id
+        );
       }
     });
 
