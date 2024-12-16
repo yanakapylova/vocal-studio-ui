@@ -11,7 +11,7 @@ const AddScheduleEvent = () => {
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const [type, setType] = useState("");
-  const [note, setNote] = useState("");
+  // const [note, setNote] = useState("");
   const groupsList = useSelector((state: RootState) => state.groups.entities);
 
   const dispatch = useDispatch<AppDispatch>();
@@ -29,17 +29,16 @@ const AddScheduleEvent = () => {
           createSchedule({
             type,
             date,
+            day: undefined,
             time,
             place,
             durationMin: 90,
-            activity: note,
+            activity: "vocal",
             groups,
           })
         );
       }}
     >
-      <h2>Добавить событие</h2>
-
       <div id="groups">
         <span>Выберите группы:</span>
         {groupsList.map((groupItem) => {
@@ -90,11 +89,9 @@ const AddScheduleEvent = () => {
             type="date"
             required
             className="formFields"
-            onChange={(e) =>
-              setDate(
-                e.target.value.slice(8) + "-" + e.target.value.slice(5, 7)
-              )
-            }
+            onChange={(e) => {
+              setDate(e.target.value);
+            }}
           />
         </div>
         <div>
@@ -119,7 +116,7 @@ const AddScheduleEvent = () => {
           />
         </div>
 
-        <div>
+        {/* <div>
           <div>Заметка</div>
           <input
             type="text"
@@ -128,7 +125,7 @@ const AddScheduleEvent = () => {
             required
             className="formFields"
           />
-        </div>
+        </div> */}
       </div>
       <button className="button">Добавить</button>
     </form>

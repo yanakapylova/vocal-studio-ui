@@ -14,3 +14,8 @@ export const months = [
 ];
 
 export const weekdays = ["ПН", "ВТ", "СР", "ЧТ", "ПТ", "СБ", "ВС"];
+
+export const activities = {
+  vocal: "Вокал",
+  choreo: "Хореография",
+};

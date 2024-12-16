@@ -1,13 +1,10 @@
-import Image from "next/image";
 import styles from "./page.module.scss";
-<<<<<<< Updated upstream
-=======
 import React, { useEffect, useState } from "react";
+import { storage } from "./firebase";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/app/store";
 import { updateUser } from "@/app/features/usersSlice";
 import { ref, uploadBytes } from "@firebase/storage";
-import { storage } from "./firebase";
 
 const UserImage = () => {
   const [file, setFile] = useState<File | null>(null);
@@ -38,6 +35,19 @@ const UserImage = () => {
                 newData: { photoURL: snapshot.metadata.fullPath },
               })
             );
+            // .then(async () => {
+            //   const userJSON = sessionStorage.getItem("user");
+            //   if (userJSON) {
+            //     const user = JSON.parse(userJSON);
+            //     sessionStorage.setItem(
+            //       "user",
+            //       JSON.stringify({
+            //         ...user,
+            //         photoURL: snapshot.metadata.fullPath,
+            //       })
+            //     );
+            //   }
+            // });
           })
           .catch((error) => {
             console.error("Upload failed", error);
@@ -47,7 +57,7 @@ const UserImage = () => {
       }
     };
     handleUpload();
-  }, [file, dispatch, user]);
+  }, [file, dispatch]);
 
   const handleDelete = async () => {
     if (user) {
@@ -75,19 +85,22 @@ const UserImage = () => {
       console.error("No such user");
     }
   };
->>>>>>> Stashed changes
 
-const UserImage = ({ user }: any) => {
   return (
     <div className={styles.profileImage}>
-      {user?.photoURL && <Image src={user?.photoURL} alt="Profile" />}
+      {user?.photoURL && (
+        <img
+          src={`https://firebasestorage.googleapis.com/v0/b/vocal-studio-8e5a9.appspot.com/o/${user?.photoURL}?alt=media&token=02a3aaf8-064c-41a6-8226-9bea6244370b`}
+          alt="Profile"
+        />
+      )}
 
       <div className={styles.newImageSetting}>
         <label className={styles.customFileUpload}>
           <input
             type="file"
             className={styles.image}
-            // onChange={(e) => updatePhotoURL(e, "update")}
+            onChange={handleFileChange}
             accept="image/*"
           />
           <div>Загрузить {user?.photoURL && "новое"} изображение</div>
@@ -95,12 +108,7 @@ const UserImage = ({ user }: any) => {
       </div>
 
       {user?.photoURL && (
-        <button
-          onClick={() => {
-            console.log("Изображение удалено");
-          }}
-          className="button"
-        >
+        <button onClick={handleDelete} className="button">
           Удалить текущее изображение
         </button>
       )}

@@ -3,6 +3,7 @@ import styles from "./page.module.scss";
 import { AppDispatch } from "@/app/store";
 import { useDispatch } from "react-redux";
 import { deleteSchedule } from "@/app/features/schedulesSlice";
+import { activities } from "./constants";
 
 export const EventItem = ({ className, index, user, item }: any) => {
   const dispatch = useDispatch<AppDispatch>();

@@ -16,7 +16,7 @@ import { Group } from "./interfaces/Group";
 export const fetchSchedules = createAsyncThunk(
   "schedule/fetchSchedules",
   async () => {
-    const response = await fetch(`http://localhost:3008/schedules`, {
+    const response = await fetch(`http://localhost:3008/api/schedule`, {
       method: "GET",
     });
     const data = await response.json();
@@ -27,9 +27,12 @@ export const fetchSchedules = createAsyncThunk(
 export const getSchedule = createAsyncThunk(
   "schedule/getSchedule",
   async (id: number) => {
-    const response = await fetch(`http://localhost:3008/schedule/user/${id}`, {
-      method: "GET",
-    });
+    const response = await fetch(
+      `http://localhost:3008/api/schedule/user/${id}`,
+      {
+        method: "GET",
+      }
+    );
     const data = await response.json();
     console.log(data);
     return data;
@@ -40,31 +43,29 @@ export const createSchedule = createAsyncThunk(
   "schedule/createSchedule",
   async (info: {
     type: string;
-    date: string;
+    date: string | undefined;
+    day: string | undefined;
     time: string;
     place: string;
     durationMin: number;
     activity: string;
     groups: number[];
   }) => {
-<<<<<<< Updated upstream
-    const { type, date, time, place, durationMin, activity, groups } = info;
-=======
+
     const { type, date, day, time, place, durationMin, activity, groups } =
       info;
     console.log(date);
     const date2 = date ? new Date(date) : null;
-
->>>>>>> Stashed changes
     console.log(groups);
-    const response = await fetch(`http://localhost:3008/schedule`, {
+    const response = await fetch(`http://localhost:3008/api/schedule`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
         type,
-        date,
+        date: date2,
+        day,
         time,
         place,
         durationMin,
@@ -81,7 +82,7 @@ export const createSchedule = createAsyncThunk(
 export const deleteSchedule = createAsyncThunk(
   "schedule/deteteSchedule",
   async (id: number) => {
-    await fetch(`http://localhost:3008/schedule/${id}`, {
+    await fetch(`http://localhost:3008/api/schedule/${id}`, {
       method: "DELETE",
     });
     return id;
@@ -91,7 +92,8 @@ export const deleteSchedule = createAsyncThunk(
 interface currentSchedule {
   id: number;
   type: string;
-  date: string;
+  date: string | undefined;
+  day: string | undefined;
   time: string;
   place: string;
   durationMin: string;
