@@ -18,7 +18,7 @@ Make sure you have the following installed:
 
 2. Use the unified Docker Compose file to run all services, including the UI service, database, and RabbitMQ:
    ```bash
-   docker-compose -f <unified-docker-compose-file>.yml up --build
+   docker-compose up --build
    ```
 
 3. The UI service will start on port `3000` as part of the complete setup.
@@ -27,8 +27,8 @@ Make sure you have the following installed:
 
 1. Clone the repository:
    ```bash
-   git clone <repository-url>
-   cd <repository-directory>
+   git clone https://github.com/yanakapylova/vocal-studio-ui
+   cd https://github.com/yanakapylova/vocal-studio-ui
 
 2. Start the service using the internal Docker Compose file:
    ```bash
