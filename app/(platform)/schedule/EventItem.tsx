@@ -20,15 +20,7 @@ export const EventItem = ({ className, index, user, item }: any) => {
               })}
             </div>
           )}
-<<<<<<< Updated upstream
           <div className={styles.activity}>{item.activity}</div>
-=======
-          {item.type == "permanent" && (
-            <div className={styles.activity}>
-              {activities[item.activity as "vocal" | "choreo"]}
-            </div>
-          )}
->>>>>>> Stashed changes
           <div className={styles.place}>{item.place}</div>
         </div>
         <button
