@@ -89,7 +89,7 @@ const Schedule = () => {
       const eventsForThisDay = schedule.filter((item) => {
         if (item.type === "permanent") {
           return item.day === weekdays[dayofweek];
-        } else {
+        } else if (item.date) {
           // console.log(item.date);
           const [eventDay, eventMonth] = format(new Date(item.date), "dd-MM")
             .split("-")
@@ -98,6 +98,8 @@ const Schedule = () => {
             day.toString() === eventDay &&
             (currentMonth + 1).toString() === eventMonth
           );
+        } else {
+          console.log("Неверный формат события")
         }
       });
 

@@ -84,6 +84,9 @@ export const deleteUser = createAsyncThunk(
   async (id: number) => {
     const response = await fetch(`http://127.0.0.1:3008/api/users/${id}`, {
       method: "DELETE",
+      headers: {
+        Authorization: localStorage.getItem("jwtToken")?.toString() as string,
+      },
     });
     if (!response.ok) {
       console.log("Error deleting user");

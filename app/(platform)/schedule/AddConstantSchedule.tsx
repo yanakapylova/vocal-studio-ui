@@ -29,6 +29,7 @@ export const AddConstantSchedule = () => {
 
   useEffect(() => {
     dispatch(fetchGroups());
+    console.log("groupsList: " + groupsList)
   }, [dispatch]);
 
   return (

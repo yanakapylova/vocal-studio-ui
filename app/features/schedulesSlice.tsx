@@ -51,11 +51,11 @@ export const createSchedule = createAsyncThunk(
     activity: string;
     groups: number[];
   }) => {
+
     const { type, date, day, time, place, durationMin, activity, groups } =
       info;
     console.log(date);
-    let date2 = date ? new Date(date) : null;
-
+    const date2 = date ? new Date(date) : null;
     console.log(groups);
     const response = await fetch(`http://localhost:3008/api/schedule`, {
       method: "POST",
