@@ -1,36 +1,62 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# UI Service
+
+This project provides the user interface for the Vocal Studio application. It allows users to interact with the platform. You can run the service either with its internal Docker Compose file or as part of a unified setup with other project services.
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Make sure you have the following installed:
+- Docker
+- Docker Compose
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Running the Service
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+#### Option 1: Using the Unified Docker Compose File (preferable)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. Request the unified Docker Compose file from the application developer.
 
-## Learn More
+2. Use the unified Docker Compose file to run all services, including the UI service, database, and RabbitMQ:
+   ```bash
+   docker-compose -f <unified-docker-compose-file>.yml up --build
+   ```
 
-To learn more about Next.js, take a look at the following resources:
+3. The UI service will start on port `3000` as part of the complete setup.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+#### Option 2: Using the Internal Docker Compose File
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. Clone the repository:
+   ```bash
+   git clone <repository-url>
+   cd <repository-directory>
 
-## Deploy on Vercel
+2. Start the service using the internal Docker Compose file:
+   ```bash
+   docker-compose up --build
+   ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+3. The service will start on port `3000`.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Configuration
+
+- **Port**: The service runs on port `3000` by default.
+
+## Test Credentials
+
+Use the following test credentials to log in:
+
+### Student Account (limited permissions):
+- **Email**: yana@gmail.com
+- **Password**: qwerty
+
+### Teacher Account (admin permissions):
+- **Email**: kristina@gmail.com
+- **Password**: qwerty
+
+## Troubleshooting
+
+- **Port Conflicts**: If port `3000` is already in use, update the port in the Docker Compose file.
+- **Database Connectivity**: Ensure the database URL is correct and reachable from the service.
+
+## Contact
+For questions or issues, please contact the application developer or the team responsible for this project.
