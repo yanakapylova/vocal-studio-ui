@@ -17,6 +17,7 @@ export const fetchGroups = createAsyncThunk("group/fetchGroups", async () => {
     method: "GET",
   });
   const data = await response.json();
+  console.log(data)
   return data;
 });
 

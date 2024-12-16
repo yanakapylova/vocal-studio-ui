@@ -47,7 +47,15 @@ export const createSchedule = createAsyncThunk(
     activity: string;
     groups: number[];
   }) => {
+<<<<<<< Updated upstream
     const { type, date, time, place, durationMin, activity, groups } = info;
+=======
+    const { type, date, day, time, place, durationMin, activity, groups } =
+      info;
+    console.log(date);
+    const date2 = date ? new Date(date) : null;
+
+>>>>>>> Stashed changes
     console.log(groups);
     const response = await fetch(`http://localhost:3008/schedule`, {
       method: "POST",
