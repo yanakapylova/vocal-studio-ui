@@ -27,8 +27,8 @@ Make sure you have the following installed:
 
 1. Clone the repository:
    ```bash
-   git clone <repository-url>
-   cd <repository-directory>
+   git clone https://github.com/yanakapylova/vocal-studio-ui
+   cd https://github.com/yanakapylova/vocal-studio-ui
 
 2. Start the service using the internal Docker Compose file:
    ```bash
